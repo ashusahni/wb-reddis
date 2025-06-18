@@ -6,6 +6,7 @@ export default async function Home(params:any) {
   const data = await response.json()
   return(
     <div>
+      <div>laflame out of here to be honest</div>
       {data.todos.map((todo:any)=> <div>
         {todo.id}
       </div> )}
