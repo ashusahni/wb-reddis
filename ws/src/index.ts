@@ -23,7 +23,7 @@ wss.on('connection', function connection(ws:any) {
     });
 
     ws.on('close', () => {
-        console.log((new Date()) + ' Client disconnected');
+        console.log((new Date()) + ' Client disconnected!');
     });
 
     ws.send('This message is from the server');
