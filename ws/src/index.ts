@@ -1,21 +1,30 @@
-const http = require('http');
-const WebSocket = require('ws');
-const { WebSocketServer } = WebSocket;
+import express, { Request, Response } from 'express';
+import http from 'http';
+import WebSocket, { WebSocketServer } from 'ws';
 
-const server = http.createServer();
-
+const app = express();
+const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
 
-wss.on('connection', function connection(ws:any) {
-    console.log((new Date()) + ' Client connected!');
+// Optional: Define a count variable if needed globally
+let connectionCount = 0;
 
-    ws.on('error', (err:any) => {
-        console.error((new Date()) + ' WebSocket error:', err);
+app.get('/', (req: Request, res: Response) => {
+    res.send('WebSocket Server is Running with Express + TypeScript!');
+});
+
+wss.on('connection', (ws: WebSocket) => {
+    console.log(new Date(), 'Client connected!');
+    connectionCount++;
+
+    ws.on('error', (err: Error) => {
+        console.error(new Date(), 'WebSocket error:', err);
     });
 
-    ws.on('message', function message(data:any, isBinary:any) {
-        console.log((new Date()) + ' Received message:', data.toString());
-        wss.clients.forEach(function each(client:any) {
+    ws.on('message', (data: WebSocket.RawData, isBinary: boolean) => {
+        console.log(new Date(), 'Received message:', data.toString());
+
+        wss.clients.forEach((client) => {
             if (client.readyState === WebSocket.OPEN) {
                 client.send(data, { binary: isBinary });
             }
@@ -23,12 +32,12 @@ wss.on('connection', function connection(ws:any) {
     });
 
     ws.on('close', () => {
-        console.log((new Date()) + ' Client disconnected!');
+        console.log(new Date(), 'Client disconnected!');
     });
 
     ws.send('This message is from the server');
 });
 
 server.listen(8000, () => {
-    console.log((new Date()) + ' Server  up to listening to port 8000');
+    console.log(new Date(), 'Express + WS server listening on port 8000');
 });
