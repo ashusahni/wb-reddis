@@ -30,5 +30,5 @@ wss.on('connection', function connection(ws:any) {
 });
 
 server.listen(8000, () => {
-    console.log((new Date()) + ' Server is up listening to port 8000');
+    console.log((new Date()) + ' Server  up to listening to port 8000');
 });
