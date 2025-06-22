@@ -7,7 +7,7 @@ const server = http.createServer();
 const wss = new WebSocketServer({ server });
 
 wss.on('connection', function connection(ws:any) {
-    console.log((new Date()) + ' Client connected');
+    console.log((new Date()) + ' Client connected!');
 
     ws.on('error', (err:any) => {
         console.error((new Date()) + ' WebSocket error:', err);
